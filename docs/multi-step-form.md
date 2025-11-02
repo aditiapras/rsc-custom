@@ -419,6 +419,103 @@ When contributing to this component:
 3. Maintain backward compatibility
 4. Update documentation
 
-## License
+## 📚 Dokumentasi Lanjutan
 
-This component is part of the project and follows the same license terms.
+### Dokumentasi Lengkap
+
+- **[API Reference](./api-reference.md)** - Dokumentasi lengkap semua interface, props, dan types
+- **[Troubleshooting & FAQ](./troubleshooting.md)** - Panduan mengatasi masalah umum dan pertanyaan yang sering diajukan
+- **[Migration Guide](./migration-guide.md)** - Panduan migrasi antar versi
+- **[Examples](../examples/)** - Contoh implementasi berbagai use case
+
+### Quick Links
+
+| Dokumentasi | Deskripsi | Target Audience |
+|-------------|-----------|------------------|
+| [Multi Step Form](./multi-step-form.md) | Dokumentasi utama dan panduan penggunaan | Semua developer |
+| [API Reference](./api-reference.md) | Referensi lengkap API dan types | Developer yang butuh detail teknis |
+| [Troubleshooting](./troubleshooting.md) | Solusi masalah umum dan FAQ | Developer yang mengalami masalah |
+| [Migration Guide](./migration-guide.md) | Panduan upgrade antar versi | Developer yang upgrade |
+| [Simple Example](../examples/simple-form.tsx) | Contoh implementasi sederhana | Developer pemula |
+
+### Struktur Dokumentasi
+
+```
+docs/
+├── multi-step-form.md      # Dokumentasi utama
+├── api-reference.md        # Referensi API lengkap
+├── troubleshooting.md      # Troubleshooting & FAQ
+└── migration-guide.md      # Panduan migrasi
+
+examples/
+├── simple-form.tsx         # Contoh sederhana
+└── advanced-form.tsx       # Contoh lanjutan (coming soon)
+
+app/components/
+├── multi-step-form.tsx     # Komponen utama
+├── multi-step-form.d.ts    # Type definitions
+└── index.ts                # Export file
+```
+
+## 🤝 Kontribusi
+
+Kontribusi sangat diterima! Silakan:
+
+### Cara Berkontribusi
+
+1. **Fork repository**
+2. **Buat feature branch** (`git checkout -b feature/amazing-feature`)
+3. **Commit perubahan** (`git commit -m 'Add amazing feature'`)
+4. **Push ke branch** (`git push origin feature/amazing-feature`)
+5. **Buat Pull Request**
+
+### Guidelines Kontribusi
+
+- **Code Style**: Ikuti existing code style dan conventions
+- **Testing**: Pastikan semua tests pass
+- **Documentation**: Update dokumentasi jika diperlukan
+- **TypeScript**: Maintain type safety
+- **Accessibility**: Pastikan fitur accessible
+
+### Areas yang Butuh Kontribusi
+
+- [ ] **Advanced Examples**: Contoh penggunaan lanjutan
+- [ ] **Custom Field Types**: Dukungan field type tambahan
+- [ ] **Conditional Logic**: Conditional fields berdasarkan input lain
+- [ ] **Internationalization**: Dukungan multi-bahasa
+- [ ] **Theme System**: System theming yang lebih fleksibel
+- [ ] **Performance**: Optimasi untuk form besar
+- [ ] **Testing**: Unit tests dan integration tests
+- [ ] **Documentation**: Perbaikan dan penambahan dokumentasi
+
+## 📄 Lisensi
+
+MIT License - lihat file LICENSE untuk detail lengkap.
+
+---
+
+## 🔗 Related Resources
+
+### Component Dependencies
+
+- **React Hook Form** - Form state management
+- **Zod** - Schema validation
+- **Tailwind CSS** - Styling framework
+- **Lucide React** - Icons
+
+### Similar Components
+
+- **React Hook Form** - Lower level form management
+- **Formik** - Alternative form library
+- **React Final Form** - Another form solution
+
+### Learning Resources
+
+- [React Hook Form Documentation](https://react-hook-form.com/)
+- [Zod Documentation](https://zod.dev/)
+- [Tailwind CSS Documentation](https://tailwindcss.com/)
+- [Accessibility Guidelines](https://www.w3.org/WAI/WCAG21/quickref/)
+
+---
+
+**Happy coding! 🚀**
