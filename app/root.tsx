@@ -53,7 +53,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
 export default function App({ loaderData }: Route.ComponentProps) {
 	return (
-		<ClerkProvider loaderData={loaderData}>
+		<ClerkProvider 
+		loaderData={loaderData}>
 			<ConvexProviderWithClerk client={convex} useAuth={useAuth}>
 				<Outlet />
 			</ConvexProviderWithClerk>
