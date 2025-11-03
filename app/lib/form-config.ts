@@ -44,6 +44,14 @@ export const formConfig = [
         validation: { minLength: 2 },
       },
       {
+        label: "ID",
+        type: "file",
+        required: true,
+        placeholder: "Upload your ID",
+        colSpan: 2,
+        validation: { fileMaxSizeMB: 10 },
+      },
+      {
         label: "Birth Date",
         type: "date",
         required: true,

@@ -1,17 +1,17 @@
 "use client";
 
-import * as React from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
 import {
+  Calendar as CalendarIcon,
   ChevronLeft,
   ChevronRight,
-  Calendar as CalendarIcon,
 } from "lucide-react";
-import { cn } from "~/lib/utils";
+import * as React from "react";
+import { type FieldPath, useForm } from "react-hook-form";
+import { z } from "zod";
 import { Button } from "~/components/ui/button";
-import { Input } from "~/components/ui/input";
-import { Textarea } from "~/components/ui/textarea";
-// removed unused Progress import
-import { Separator } from "~/components/ui/separator";
+import { Calendar } from "~/components/ui/calendar";
+import { Checkbox } from "~/components/ui/checkbox";
 import {
   Form,
   FormControl,
@@ -20,43 +20,43 @@ import {
   FormLabel,
   FormMessage,
 } from "~/components/ui/form";
-import {
-  Select,
-  SelectTrigger,
-  SelectContent,
-  SelectItem,
-  SelectValue,
-} from "~/components/ui/select";
-import { Calendar } from "~/components/ui/calendar";
+import { Input } from "~/components/ui/input";
+import { Label } from "~/components/ui/label";
 import {
   Popover,
-  PopoverTrigger,
   PopoverContent,
+  PopoverTrigger,
 } from "~/components/ui/popover";
-import { Checkbox } from "~/components/ui/checkbox";
-import { Switch } from "~/components/ui/switch";
 import { RadioGroup, RadioGroupItem } from "~/components/ui/radio-group";
-import { Label } from "~/components/ui/label";
-import { useForm, type FieldPath } from "react-hook-form";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "~/components/ui/select";
+// removed unused Progress import
+import { Separator } from "~/components/ui/separator";
+import { Switch } from "~/components/ui/switch";
+import { Textarea } from "~/components/ui/textarea";
+import { cn } from "~/lib/utils";
 
 export type Option = { label: string; value: string };
 
 export type FieldConfig = {
   label: string;
   type:
-    | "text"
-    | "password"
-    | "date"
-    | "select"
-    | "textarea"
-    | "number"
-    | "email"
-    | "radio"
-    | "checkbox"
-    | "switch"
-    | "file";
+  | "text"
+  | "password"
+  | "date"
+  | "select"
+  | "textarea"
+  | "number"
+  | "email"
+  | "radio"
+  | "checkbox"
+  | "switch"
+  | "file";
   placeholder?: string;
   required?: boolean;
   error_message?: string;
@@ -150,13 +150,13 @@ function schemaForField(field: FieldConfig) {
         .email(`${field.label} harus berupa email yang valid`);
       return field.required
         ? z
-            .string()
-            .min(1, msg)
-            .email(`${field.label} harus berupa email yang valid`)
+          .string()
+          .min(1, msg)
+          .email(`${field.label} harus berupa email yang valid`)
         : z.preprocess(
-            (val) => (val === "" ? undefined : val),
-            emailBase.optional(),
-          );
+          (val) => (val === "" ? undefined : val),
+          emailBase.optional(),
+        );
     }
     case "number": {
       // Use coercion to accept numeric strings; for optional, convert empty string to undefined
@@ -228,26 +228,26 @@ function schemaForField(field: FieldConfig) {
       if (minTime !== undefined) {
         schema = field.required
           ? schema.refine((d) => d instanceof Date && d.getTime() >= minTime, {
-              message: `${field.label} tidak boleh sebelum ${minLabel}`,
-            })
+            message: `${field.label} tidak boleh sebelum ${minLabel}`,
+          })
           : schema.refine(
-              (d) => (d instanceof Date ? d.getTime() >= minTime : true),
-              {
-                message: `${field.label} tidak boleh sebelum ${minLabel}`,
-              },
-            );
+            (d) => (d instanceof Date ? d.getTime() >= minTime : true),
+            {
+              message: `${field.label} tidak boleh sebelum ${minLabel}`,
+            },
+          );
       }
       if (maxTime !== undefined) {
         schema = field.required
           ? schema.refine((d) => d instanceof Date && d.getTime() <= maxTime, {
-              message: `${field.label} tidak boleh setelah ${maxLabel}`,
-            })
+            message: `${field.label} tidak boleh setelah ${maxLabel}`,
+          })
           : schema.refine(
-              (d) => (d instanceof Date ? d.getTime() <= maxTime : true),
-              {
-                message: `${field.label} tidak boleh setelah ${maxLabel}`,
-              },
-            );
+            (d) => (d instanceof Date ? d.getTime() <= maxTime : true),
+            {
+              message: `${field.label} tidak boleh setelah ${maxLabel}`,
+            },
+          );
       }
       return schema;
     }
@@ -317,7 +317,8 @@ export function MultiStepForm({
             defaultValues[key] = Array.isArray(provided) ? provided : [];
           } else {
             // Single checkbox - default to false
-            defaultValues[key] = typeof provided === "boolean" ? provided : false;
+            defaultValues[key] =
+              typeof provided === "boolean" ? provided : false;
           }
           break;
         case "switch":
@@ -481,7 +482,7 @@ export function MultiStepForm({
                                     className={cn(
                                       "justify-start text-left font-normal",
                                       !rhfField.value &&
-                                        "text-muted-foreground",
+                                      "text-muted-foreground",
                                     )}
                                   >
                                     <CalendarIcon className="mr-2 size-4" />
@@ -511,8 +512,7 @@ export function MultiStepForm({
                                 >
                                   <Calendar
                                     mode="single"
-                                                captionLayout="dropdown"
-
+                                    captionLayout="dropdown"
                                     selected={rhfField.value as Date}
                                     onSelect={rhfField.onChange}
                                     initialFocus
@@ -524,8 +524,14 @@ export function MultiStepForm({
                                 // Checkbox array
                                 <div className="grid gap-2">
                                   {field.options.map((opt) => {
-                                    const currentValues = Array.isArray(rhfField.value) ? rhfField.value : [];
-                                    const isChecked = currentValues.includes(opt.value);
+                                    const currentValues = Array.isArray(
+                                      rhfField.value,
+                                    )
+                                      ? rhfField.value
+                                      : [];
+                                    const isChecked = currentValues.includes(
+                                      opt.value,
+                                    );
                                     return (
                                       <div
                                         key={opt.value}
@@ -533,14 +539,22 @@ export function MultiStepForm({
                                       >
                                         <Checkbox
                                           checked={isChecked}
-                                          onCheckedChange={(checked: boolean | "indeterminate") => {
-                                            const newValues = [...currentValues];
+                                          onCheckedChange={(
+                                            checked: boolean | "indeterminate",
+                                          ) => {
+                                            const newValues = [
+                                              ...currentValues,
+                                            ];
                                             if (checked) {
-                                              if (!newValues.includes(opt.value)) {
+                                              if (
+                                                !newValues.includes(opt.value)
+                                              ) {
                                                 newValues.push(opt.value);
                                               }
                                             } else {
-                                              const index = newValues.indexOf(opt.value);
+                                              const index = newValues.indexOf(
+                                                opt.value,
+                                              );
                                               if (index > -1) {
                                                 newValues.splice(index, 1);
                                               }
@@ -561,9 +575,9 @@ export function MultiStepForm({
                                 <div className="flex items-center gap-2">
                                   <Checkbox
                                     checked={!!rhfField.value}
-                                    onCheckedChange={(v: boolean | "indeterminate") =>
-                                      rhfField.onChange(Boolean(v))
-                                    }
+                                    onCheckedChange={(
+                                      v: boolean | "indeterminate",
+                                    ) => rhfField.onChange(Boolean(v))}
                                   />
                                   <span className="text-sm text-muted-foreground">
                                     {placeholder}
@@ -612,7 +626,7 @@ export function MultiStepForm({
                                 onChange={(e) =>
                                   rhfField.onChange(
                                     (e.target as HTMLInputElement).files?.[0] ??
-                                      undefined,
+                                    undefined,
                                   )
                                 }
                                 onBlur={rhfField.onBlur}
