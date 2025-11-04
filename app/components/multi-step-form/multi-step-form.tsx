@@ -46,17 +46,17 @@ export type Option = { label: string; value: string };
 export type FieldConfig = {
   label: string;
   type:
-  | "text"
-  | "password"
-  | "date"
-  | "select"
-  | "textarea"
-  | "number"
-  | "email"
-  | "radio"
-  | "checkbox"
-  | "switch"
-  | "file";
+    | "text"
+    | "password"
+    | "date"
+    | "select"
+    | "textarea"
+    | "number"
+    | "email"
+    | "radio"
+    | "checkbox"
+    | "switch"
+    | "file";
   placeholder?: string;
   required?: boolean;
   error_message?: string;
@@ -127,13 +127,13 @@ function schemaForField(field: FieldConfig) {
       if (v.minLength) {
         str = str.min(
           v.minLength,
-          `${field.label} minimal ${v.minLength} karakter`,
+          `${field.label} minimal ${v.minLength} karakter`
         );
       }
       if (v.maxLength) {
         str = str.max(
           v.maxLength,
-          `${field.label} maksimal ${v.maxLength} karakter`,
+          `${field.label} maksimal ${v.maxLength} karakter`
         );
       }
       if (v.pattern) {
@@ -150,13 +150,13 @@ function schemaForField(field: FieldConfig) {
         .email(`${field.label} harus berupa email yang valid`);
       return field.required
         ? z
-          .string()
-          .min(1, msg)
-          .email(`${field.label} harus berupa email yang valid`)
+            .string()
+            .min(1, msg)
+            .email(`${field.label} harus berupa email yang valid`)
         : z.preprocess(
-          (val) => (val === "" ? undefined : val),
-          emailBase.optional(),
-        );
+            (val) => (val === "" ? undefined : val),
+            emailBase.optional()
+          );
     }
     case "number": {
       // Use coercion to accept numeric strings; for optional, convert empty string to undefined
@@ -186,12 +186,11 @@ function schemaForField(field: FieldConfig) {
         return field.required
           ? arraySchema.min(1, `${field.label} - pilih minimal 1 opsi`)
           : arraySchema.optional();
-      } else {
-        // Single checkbox - validate as boolean
-        return field.required
-          ? z.boolean().refine((v) => v === true, { message: msg })
-          : z.boolean().optional();
       }
+      // Single checkbox - validate as boolean
+      return field.required
+        ? z.boolean().refine((v) => v === true, { message: msg })
+        : z.boolean().optional();
     }
     case "switch": {
       return field.required
@@ -216,7 +215,7 @@ function schemaForField(field: FieldConfig) {
           const d = new Date(val);
           return Number.isNaN(d.getTime()) ? undefined : d;
         }
-        return undefined;
+        return;
       };
       let schema = field.required
         ? z.preprocess((val) => toDate(val), dateBase)
@@ -228,26 +227,26 @@ function schemaForField(field: FieldConfig) {
       if (minTime !== undefined) {
         schema = field.required
           ? schema.refine((d) => d instanceof Date && d.getTime() >= minTime, {
-            message: `${field.label} tidak boleh sebelum ${minLabel}`,
-          })
-          : schema.refine(
-            (d) => (d instanceof Date ? d.getTime() >= minTime : true),
-            {
               message: `${field.label} tidak boleh sebelum ${minLabel}`,
-            },
-          );
+            })
+          : schema.refine(
+              (d) => (d instanceof Date ? d.getTime() >= minTime : true),
+              {
+                message: `${field.label} tidak boleh sebelum ${minLabel}`,
+              }
+            );
       }
       if (maxTime !== undefined) {
         schema = field.required
           ? schema.refine((d) => d instanceof Date && d.getTime() <= maxTime, {
-            message: `${field.label} tidak boleh setelah ${maxLabel}`,
-          })
-          : schema.refine(
-            (d) => (d instanceof Date ? d.getTime() <= maxTime : true),
-            {
               message: `${field.label} tidak boleh setelah ${maxLabel}`,
-            },
-          );
+            })
+          : schema.refine(
+              (d) => (d instanceof Date ? d.getTime() <= maxTime : true),
+              {
+                message: `${field.label} tidak boleh setelah ${maxLabel}`,
+              }
+            );
       }
       return schema;
     }
@@ -279,7 +278,7 @@ export function MultiStepForm({
 
   const steps = React.useMemo(
     () => [...config].sort((a, b) => a.step_number - b.step_number),
-    [config],
+    [config]
   );
   const total = steps.length;
 
@@ -349,7 +348,7 @@ export function MultiStepForm({
   const currentStep = steps[current];
   const fieldNamesByStep = React.useMemo(
     () => steps.map((s) => s.field.map((f) => nameMap[f.label])),
-    [steps, nameMap],
+    [steps, nameMap]
   );
 
   async function handleNext() {
@@ -358,12 +357,10 @@ export function MultiStepForm({
     if (!ok) return;
     if (current < total - 1) {
       setCurrent((c) => c + 1);
-    } else {
-      if (onSubmit) {
-        await form.handleSubmit(async (vals) => {
-          await onSubmit(vals);
-        })();
-      }
+    } else if (onSubmit) {
+      await form.handleSubmit(async (vals) => {
+        await onSubmit(vals);
+      })();
     }
   }
 
@@ -380,12 +377,12 @@ export function MultiStepForm({
             const isDoneOrActive = idx <= current;
             return (
               <div
-                key={s.step_number}
+                aria-hidden="true"
                 className={cn(
                   "h-1.5 flex-1 rounded-full",
-                  isDoneOrActive ? "bg-foreground" : "bg-muted",
+                  isDoneOrActive ? "bg-foreground" : "bg-muted"
                 )}
-                aria-hidden="true"
+                key={s.step_number}
               />
             );
           })}
@@ -396,7 +393,7 @@ export function MultiStepForm({
         {/* Step Content */}
         <div className="grid gap-4">
           <div>
-            <h2 className="text-xl font-semibold">{currentStep.title}</h2>
+            <h2 className="font-semibold text-xl">{currentStep.title}</h2>
             {currentStep.description && (
               <p className="text-muted-foreground text-sm">
                 {currentStep.description}
@@ -411,7 +408,7 @@ export function MultiStepForm({
                 ? "md:grid-cols-2"
                 : currentStep.layout?.columns === 3
                   ? "md:grid-cols-3"
-                  : undefined,
+                  : undefined
             )}
           >
             {currentStep.field.map((field) => {
@@ -426,7 +423,7 @@ export function MultiStepForm({
                     ? "md:col-span-3"
                     : undefined;
               return (
-                <div key={name} className={cn(spanClass)}>
+                <div className={cn(spanClass)} key={name}>
                   <FormField
                     control={form.control}
                     name={name as FieldPath<z.infer<typeof schema>>}
@@ -442,16 +439,16 @@ export function MultiStepForm({
                           <FormControl>
                             {field.type === "textarea" ? (
                               <Textarea
-                                placeholder={placeholder}
                                 name={rhfField.name}
+                                onBlur={rhfField.onBlur}
+                                onChange={rhfField.onChange}
+                                placeholder={placeholder}
+                                ref={rhfField.ref}
                                 value={
                                   typeof rhfField.value === "string"
                                     ? rhfField.value
                                     : ""
                                 }
-                                onChange={rhfField.onChange}
-                                onBlur={rhfField.onBlur}
-                                ref={rhfField.ref}
                               />
                             ) : field.type === "select" ? (
                               <Select
@@ -478,12 +475,11 @@ export function MultiStepForm({
                               <Popover>
                                 <PopoverTrigger asChild>
                                   <Button
-                                    variant="outline"
                                     className={cn(
                                       "justify-start text-left font-normal",
-                                      !rhfField.value &&
-                                      "text-muted-foreground",
+                                      !rhfField.value && "text-muted-foreground"
                                     )}
+                                    variant="outline"
                                   >
                                     <CalendarIcon className="mr-2 size-4" />
                                     {(() => {
@@ -496,7 +492,7 @@ export function MultiStepForm({
                                         typeof v === "number"
                                       ) {
                                         const d = new Date(
-                                          v as string | number,
+                                          v as string | number
                                         );
                                         return Number.isNaN(d.getTime())
                                           ? (placeholder ?? "Pilih tanggal")
@@ -507,15 +503,15 @@ export function MultiStepForm({
                                   </Button>
                                 </PopoverTrigger>
                                 <PopoverContent
-                                  className="w-auto p-0"
                                   align="start"
+                                  className="w-auto p-0"
                                 >
                                   <Calendar
-                                    mode="single"
                                     captionLayout="dropdown"
-                                    selected={rhfField.value as Date}
-                                    onSelect={rhfField.onChange}
                                     initialFocus
+                                    mode="single"
+                                    onSelect={rhfField.onChange}
+                                    selected={rhfField.value as Date}
                                   />
                                 </PopoverContent>
                               </Popover>
@@ -525,22 +521,23 @@ export function MultiStepForm({
                                 <div className="grid gap-2">
                                   {field.options.map((opt) => {
                                     const currentValues = Array.isArray(
-                                      rhfField.value,
+                                      rhfField.value
                                     )
                                       ? rhfField.value
                                       : [];
                                     const isChecked = currentValues.includes(
-                                      opt.value,
+                                      opt.value
                                     );
                                     return (
                                       <div
-                                        key={opt.value}
                                         className="flex items-center gap-2"
+                                        key={opt.value}
                                       >
                                         <Checkbox
                                           checked={isChecked}
+                                          id={`${name}_${opt.value}`}
                                           onCheckedChange={(
-                                            checked: boolean | "indeterminate",
+                                            checked: boolean | "indeterminate"
                                           ) => {
                                             const newValues = [
                                               ...currentValues,
@@ -553,7 +550,7 @@ export function MultiStepForm({
                                               }
                                             } else {
                                               const index = newValues.indexOf(
-                                                opt.value,
+                                                opt.value
                                               );
                                               if (index > -1) {
                                                 newValues.splice(index, 1);
@@ -561,7 +558,6 @@ export function MultiStepForm({
                                             }
                                             rhfField.onChange(newValues);
                                           }}
-                                          id={`${name}_${opt.value}`}
                                         />
                                         <Label htmlFor={`${name}_${opt.value}`}>
                                           {opt.label}
@@ -576,10 +572,10 @@ export function MultiStepForm({
                                   <Checkbox
                                     checked={!!rhfField.value}
                                     onCheckedChange={(
-                                      v: boolean | "indeterminate",
+                                      v: boolean | "indeterminate"
                                     ) => rhfField.onChange(Boolean(v))}
                                   />
-                                  <span className="text-sm text-muted-foreground">
+                                  <span className="text-muted-foreground text-sm">
                                     {placeholder}
                                   </span>
                                 </div>
@@ -592,7 +588,7 @@ export function MultiStepForm({
                                     rhfField.onChange(Boolean(v))
                                   }
                                 />
-                                <span className="text-sm text-muted-foreground">
+                                <span className="text-muted-foreground text-sm">
                                   {placeholder}
                                 </span>
                               </div>
@@ -604,12 +600,12 @@ export function MultiStepForm({
                                 <div className="grid gap-2">
                                   {field.options?.map((opt) => (
                                     <div
-                                      key={opt.value}
                                       className="flex items-center gap-2"
+                                      key={opt.value}
                                     >
                                       <RadioGroupItem
-                                        value={opt.value}
                                         id={`${name}_${opt.value}`}
+                                        value={opt.value}
                                       />
                                       <Label htmlFor={`${name}_${opt.value}`}>
                                         {opt.label}
@@ -620,23 +616,26 @@ export function MultiStepForm({
                               </RadioGroup>
                             ) : field.type === "file" ? (
                               <Input
-                                type="file"
-                                name={rhfField.name}
                                 accept={field.accept}
+                                name={rhfField.name}
+                                onBlur={rhfField.onBlur}
                                 onChange={(e) =>
                                   rhfField.onChange(
                                     (e.target as HTMLInputElement).files?.[0] ??
-                                    undefined,
+                                      undefined
                                   )
                                 }
-                                onBlur={rhfField.onBlur}
                                 ref={rhfField.ref}
+                                type="file"
                               />
                             ) : (
                               <Input
-                                type={field.type}
-                                placeholder={placeholder}
                                 name={rhfField.name}
+                                onBlur={rhfField.onBlur}
+                                onChange={rhfField.onChange}
+                                placeholder={placeholder}
+                                ref={rhfField.ref}
+                                type={field.type}
                                 value={
                                   field.type === "number"
                                     ? typeof rhfField.value === "number"
@@ -648,9 +647,6 @@ export function MultiStepForm({
                                       ? rhfField.value
                                       : ""
                                 }
-                                onChange={rhfField.onChange}
-                                onBlur={rhfField.onBlur}
-                                ref={rhfField.ref}
                               />
                             )}
                           </FormControl>
@@ -668,17 +664,17 @@ export function MultiStepForm({
         {/* Navigation */}
         <div className="flex items-center justify-between">
           <Button
-            variant="outline"
-            type="button"
-            onClick={handlePrev}
             disabled={current === 0}
+            onClick={handlePrev}
+            type="button"
+            variant="outline"
           >
             <ChevronLeft className="mr-2 size-4" /> Previous
           </Button>
           <Button
-            type="button"
-            onClick={handleNext}
             disabled={form.formState.isSubmitting}
+            onClick={handleNext}
+            type="button"
           >
             {current < total - 1 ? (
               <>

@@ -1,64 +1,64 @@
 /// <reference types="vite/client" />
 
 // CSS Modules
-declare module '*.module.css' {
+declare module "*.module.css" {
   const classes: { [key: string]: string };
   export default classes;
 }
 
-declare module '*.module.scss' {
+declare module "*.module.scss" {
   const classes: { [key: string]: string };
   export default classes;
 }
 
-declare module '*.module.sass' {
+declare module "*.module.sass" {
   const classes: { [key: string]: string };
   export default classes;
 }
 
 // Regular CSS files
-declare module '*.css' {
+declare module "*.css" {
   const content: string;
   export default content;
 }
 
-declare module '*.scss' {
+declare module "*.scss" {
   const content: string;
   export default content;
 }
 
-declare module '*.sass' {
+declare module "*.sass" {
   const content: string;
   export default content;
 }
 
 // Image files
-declare module '*.svg' {
+declare module "*.svg" {
   const content: string;
   export default content;
 }
 
-declare module '*.png' {
+declare module "*.png" {
   const content: string;
   export default content;
 }
 
-declare module '*.jpg' {
+declare module "*.jpg" {
   const content: string;
   export default content;
 }
 
-declare module '*.jpeg' {
+declare module "*.jpeg" {
   const content: string;
   export default content;
 }
 
-declare module '*.gif' {
+declare module "*.gif" {
   const content: string;
   export default content;
 }
 
-declare module '*.webp' {
+declare module "*.webp" {
   const content: string;
   export default content;
 }

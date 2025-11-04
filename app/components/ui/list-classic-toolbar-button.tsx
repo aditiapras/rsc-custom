@@ -1,29 +1,28 @@
-'use client';
+"use client";
 
-import * as React from 'react';
-
-import { indentListItems, unindentListItems } from '@platejs/list-classic';
+import { indentListItems, unindentListItems } from "@platejs/list-classic";
 import {
   useListToolbarButton,
   useListToolbarButtonState,
-} from '@platejs/list-classic/react';
+} from "@platejs/list-classic/react";
 import {
   IndentIcon,
   List,
   ListOrdered,
   ListTodo,
   OutdentIcon,
-} from 'lucide-react';
-import { KEYS } from 'platejs';
-import { useEditorRef } from 'platejs/react';
+} from "lucide-react";
+import { KEYS } from "platejs";
+import { useEditorRef } from "platejs/react";
+import type * as React from "react";
 
-import { ToolbarButton } from './toolbar';
+import { ToolbarButton } from "./toolbar";
 
 const nodeTypeMap: Record<string, { icon: React.JSX.Element; label: string }> =
   {
-    [KEYS.olClassic]: { icon: <ListOrdered />, label: 'Numbered List' },
-    [KEYS.taskList]: { icon: <ListTodo />, label: 'Task List' },
-    [KEYS.ulClassic]: { icon: <List />, label: 'Bulleted List' },
+    [KEYS.olClassic]: { icon: <ListOrdered />, label: "Numbered List" },
+    [KEYS.taskList]: { icon: <ListTodo />, label: "Task List" },
+    [KEYS.ulClassic]: { icon: <List />, label: "Bulleted List" },
   };
 
 export function ListToolbarButton({
@@ -57,7 +56,7 @@ export function IndentToolbarButton({
       onClick={() => {
         reverse ? unindentListItems(editor) : indentListItems(editor);
       }}
-      tooltip={reverse ? 'Outdent' : 'Indent'}
+      tooltip={reverse ? "Outdent" : "Indent"}
     >
       {reverse ? <OutdentIcon /> : <IndentIcon />}
     </ToolbarButton>

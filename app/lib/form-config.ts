@@ -8,7 +8,7 @@ export const formConfig = [
     step_number: 1,
     title: "Sign Up",
     description: "Create a new account",
-    layout: { columns: 1 as 1 },
+    layout: { columns: 1 as const },
     field: [
       {
         label: "Email",
@@ -33,7 +33,7 @@ export const formConfig = [
     step_number: 2,
     title: "Profile",
     description: "Tell us more about you",
-    layout: { columns: 2 as 2 },
+    layout: { columns: 2 as const },
     field: [
       {
         label: "Full Name",
@@ -95,7 +95,7 @@ export const formConfig = [
     step_number: 3,
     title: "Preferences",
     description: "Choose your interests",
-    layout: { columns: 2 as 2 },
+    layout: { columns: 2 as const },
     field: [
       {
         label: "Country",
@@ -133,6 +133,6 @@ export const formConfig = [
       },
     ],
   },
-]
+];
 
-export default formConfig
+export default formConfig;

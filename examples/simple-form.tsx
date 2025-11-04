@@ -1,11 +1,11 @@
 /**
  * Contoh penggunaan sederhana Multi Step Form
- * 
+ *
  * File ini menunjukkan cara menggunakan komponen MultiStepForm
  * dengan konfigurasi yang minimal dan mudah dipahami.
  */
 
-import { MultiStepForm, type StepConfig } from "~/components/multi-step-form"
+import { MultiStepForm, type StepConfig } from "~/components/multi-step-form";
 
 // Konfigurasi form sederhana dengan 2 step
 const simpleFormConfig: StepConfig[] = [
@@ -20,22 +20,22 @@ const simpleFormConfig: StepConfig[] = [
         type: "text",
         required: true,
         placeholder: "Masukkan nama lengkap Anda",
-        validation: { minLength: 2 }
+        validation: { minLength: 2 },
       },
       {
         label: "Email",
         type: "email",
         required: true,
-        placeholder: "contoh@email.com"
+        placeholder: "contoh@email.com",
       },
       {
         label: "Password",
         type: "password",
         required: true,
         placeholder: "Minimal 8 karakter",
-        validation: { minLength: 8 }
-      }
-    ]
+        validation: { minLength: 8 },
+      },
+    ],
   },
   {
     step_number: 2,
@@ -52,8 +52,8 @@ const simpleFormConfig: StepConfig[] = [
         options: [
           { label: "Indonesia", value: "ID" },
           { label: "Malaysia", value: "MY" },
-          { label: "Singapura", value: "SG" }
-        ]
+          { label: "Singapura", value: "SG" },
+        ],
       },
       {
         label: "Jenis Kelamin",
@@ -62,8 +62,8 @@ const simpleFormConfig: StepConfig[] = [
         colSpan: 1,
         options: [
           { label: "Laki-laki", value: "male" },
-          { label: "Perempuan", value: "female" }
-        ]
+          { label: "Perempuan", value: "female" },
+        ],
       },
       {
         label: "Minat",
@@ -73,23 +73,23 @@ const simpleFormConfig: StepConfig[] = [
         options: [
           { label: "Teknologi", value: "tech" },
           { label: "Desain", value: "design" },
-          { label: "Bisnis", value: "business" }
-        ]
+          { label: "Bisnis", value: "business" },
+        ],
       },
       {
         label: "Berlangganan Newsletter",
         type: "switch",
         required: false,
-        colSpan: 2
-      }
-    ]
-  }
-]
+        colSpan: 2,
+      },
+    ],
+  },
+];
 
 export default function SimpleFormExample() {
   const handleSubmit = (values: Record<string, unknown>) => {
-    console.log("Form submitted with values:", values)
-    
+    console.log("Form submitted with values:", values);
+
     // Contoh data yang akan diterima:
     // {
     //   namaLengkap: "John Doe",
@@ -100,31 +100,31 @@ export default function SimpleFormExample() {
     //   minat: ["tech", "design"],
     //   berlanggananNewsletter: true
     // }
-    
-    alert("Form berhasil disubmit! Cek console untuk melihat data.")
-  }
+
+    alert("Form berhasil disubmit! Cek console untuk melihat data.");
+  };
 
   return (
     <div className="container mx-auto max-w-2xl py-10">
-      <h1 className="text-3xl font-bold mb-2">Contoh Form Sederhana</h1>
-      <p className="text-muted-foreground mb-8">
+      <h1 className="mb-2 font-bold text-3xl">Contoh Form Sederhana</h1>
+      <p className="mb-8 text-muted-foreground">
         Ini adalah contoh penggunaan MultiStepForm dengan konfigurasi sederhana.
       </p>
-      
+
       <MultiStepForm
+        className="rounded-lg border bg-card p-6"
         config={simpleFormConfig}
-        onSubmit={handleSubmit}
         initialValues={{
           // Opsional: nilai awal untuk form
           namaLengkap: "",
-          email: ""
+          email: "",
         }}
-        className="bg-card p-6 rounded-lg border"
+        onSubmit={handleSubmit}
       />
-      
-      <div className="mt-8 p-4 bg-muted rounded-lg">
-        <h3 className="font-semibold mb-2">Tips:</h3>
-        <ul className="text-sm text-muted-foreground space-y-1">
+
+      <div className="mt-8 rounded-lg bg-muted p-4">
+        <h3 className="mb-2 font-semibold">Tips:</h3>
+        <ul className="space-y-1 text-muted-foreground text-sm">
           <li>• Field dengan tanda (*) wajib diisi</li>
           <li>• Form akan memvalidasi input secara real-time</li>
           <li>• Tombol "Next" hanya aktif jika semua field valid</li>
@@ -132,17 +132,17 @@ export default function SimpleFormExample() {
         </ul>
       </div>
     </div>
-  )
+  );
 }
 
 /**
  * Cara menggunakan contoh ini:
- * 
+ *
  * 1. Import komponen ini ke dalam route atau page
  * 2. Render komponen SimpleFormExample
  * 3. Test form dengan mengisi semua field
  * 4. Lihat hasil di console browser
- * 
+ *
  * Untuk kustomisasi lebih lanjut, lihat:
  * - docs/multi-step-form.md untuk dokumentasi lengkap
  * - app/lib/form-config.ts untuk contoh konfigurasi kompleks

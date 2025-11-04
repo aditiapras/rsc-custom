@@ -7,13 +7,13 @@ export default defineConfig({
   plugins: [tailwindcss(), reactRouter(), tsconfigPaths()],
   css: {
     modules: {
-      localsConvention: 'camelCase',
+      localsConvention: "camelCase",
     },
   },
   optimizeDeps: {
-    include: ['react-tweet'],
+    include: ["react-tweet"],
   },
   ssr: {
-    noExternal: ['react-tweet'],
+    noExternal: ["react-tweet"],
   },
 });

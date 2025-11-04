@@ -1,15 +1,13 @@
-'use client';
-
-import * as React from 'react';
+"use client";
 
 import {
   type CursorData,
   type CursorOverlayState,
   useCursorOverlay,
-} from '@platejs/selection/react';
-import { RangeApi } from 'platejs';
+} from "@platejs/selection/react";
+import { RangeApi } from "platejs";
 
-import { cn } from '~/lib/utils';
+import { cn } from "~/lib/utils";
 
 export function CursorOverlay() {
   const { cursors } = useCursorOverlay();
@@ -35,27 +33,25 @@ function Cursor({
 
   return (
     <>
-      {selectionRects.map((position, i) => {
-        return (
-          <div
-            key={i}
-            className={cn(
-              'pointer-events-none absolute z-10',
-              id === 'selection' && 'bg-brand/25',
-              id === 'selection' && isCursor && 'bg-primary'
-            )}
-            style={{
-              ...selectionStyle,
-              ...position,
-            }}
-          />
-        );
-      })}
+      {selectionRects.map((position, i) => (
+        <div
+          className={cn(
+            "pointer-events-none absolute z-10",
+            id === "selection" && "bg-brand/25",
+            id === "selection" && isCursor && "bg-primary"
+          )}
+          key={i}
+          style={{
+            ...selectionStyle,
+            ...position,
+          }}
+        />
+      ))}
       {caretPosition && (
         <div
           className={cn(
-            'pointer-events-none absolute z-10 w-0.5',
-            id === 'drag' && 'w-px bg-brand'
+            "pointer-events-none absolute z-10 w-0.5",
+            id === "drag" && "w-px bg-brand"
           )}
           style={{ ...caretPosition, ...style }}
         />

@@ -1,39 +1,39 @@
-import type { Route } from "./+types/form-demo";
-import { MultiStepForm } from "../components/multi-step-form";
 import { formConfig } from "~/lib/form-config";
+import { MultiStepForm } from "../components/multi-step-form";
+import type { Route } from "./+types/form-demo";
 
 export const meta: Route.MetaFunction = () => [
-	{ title: "Multi Step Form Demo" },
+  { title: "Multi Step Form Demo" },
 ];
 
 export default function FormDemo() {
-	return (
-		<div className="container mx-auto max-w-2xl py-10">
-			<h1 className="text-2xl font-semibold mb-4">Multi Step Form (Demo)</h1>
-			<p className="text-sm text-muted-foreground mb-6">
-				Contoh implementasi komponen MultiStepForm menggunakan konfigurasi dari
-				app/lib/form-config.ts.
-			</p>
-			<MultiStepForm
-				config={formConfig as any}
-				onSubmit={(values) => {
-					console.log("Submitted values:", values);
-					alert("Form submitted! Cek console untuk data.");
-				}}
-			/>
-			<section className="mt-10">
-				<h2 className="text-xl font-medium mb-2">
-					Props yang bisa dikustomisasi
-				</h2>
-				<ul className="list-disc pl-6 text-sm">
-					<li>config: StepConfig[] (struktur sesuai form.tsx)</li>
-					<li>onSubmit(values): fungsi untuk menangani submit</li>
-					<li>initialValues: nilai awal untuk seluruh field (opsional)</li>
-					<li>className: class tambahan untuk wrapper form</li>
-				</ul>
-			</section>
-		</div>
-	);
+  return (
+    <div className="container mx-auto max-w-2xl py-10">
+      <h1 className="mb-4 font-semibold text-2xl">Multi Step Form (Demo)</h1>
+      <p className="mb-6 text-muted-foreground text-sm">
+        Contoh implementasi komponen MultiStepForm menggunakan konfigurasi dari
+        app/lib/form-config.ts.
+      </p>
+      <MultiStepForm
+        config={formConfig as any}
+        onSubmit={(values) => {
+          console.log("Submitted values:", values);
+          alert("Form submitted! Cek console untuk data.");
+        }}
+      />
+      <section className="mt-10">
+        <h2 className="mb-2 font-medium text-xl">
+          Props yang bisa dikustomisasi
+        </h2>
+        <ul className="list-disc pl-6 text-sm">
+          <li>config: StepConfig[] (struktur sesuai form.tsx)</li>
+          <li>onSubmit(values): fungsi untuk menangani submit</li>
+          <li>initialValues: nilai awal untuk seluruh field (opsional)</li>
+          <li>className: class tambahan untuk wrapper form</li>
+        </ul>
+      </section>
+    </div>
+  );
 }
 
 /*
