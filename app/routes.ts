@@ -8,4 +8,5 @@ export default [
   route("demo", "routes/form-demo.tsx"),
   route("editor", "routes/editor.tsx"),
   route("preview", "routes/preview.tsx"),
+  route("dashboard", "routes/dashboard.tsx"),
 ] satisfies RouteConfig;
