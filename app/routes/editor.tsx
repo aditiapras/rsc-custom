@@ -1,8 +1,8 @@
 import { api } from "convex/_generated/api";
 import { useMutation } from "convex/react";
 import { Toaster, toast } from "sonner";
-import { useEditor } from "~/components/editor-kit";
-import { PlateEditor } from "~/components/plate-editor";
+import { useEditor } from "~/components/rich-text-editor/editor-kit";
+import { PlateEditor } from "~/components/rich-text-editor/plate-editor";
 
 function SaveButton() {
   const editor = useEditor();

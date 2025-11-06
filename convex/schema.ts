@@ -142,4 +142,16 @@ export default defineSchema({
     skhus: v.optional(v.string()),
     graduationCertificate: v.optional(v.string()),
   }).index("by_participantId", ["participantId"]),
+
+  // Files table for Convex Storage uploads
+  files: defineTable({
+    storageId: v.id("_storage"),
+    url: v.string(),
+    name: v.string(),
+    type: v.string(),
+    size: v.number(),
+    ownerId: v.optional(v.string()),
+    createdAt: v.number(),
+    updatedAt: v.number(),
+  }).index("by_ownerId", ["ownerId"]),
 });

@@ -3,12 +3,12 @@ import type { Id } from "convex/_generated/dataModel";
 import { fetchQuery } from "convex/nextjs";
 import { createSlateEditor } from "platejs";
 import { PlateStatic } from "platejs/static";
-import { BaseEditorKit } from "~/components/editor-base-kit";
+import { BaseEditorKit } from "~/components/rich-text-editor/editor-base-kit";
 import type { Route } from "./+types/preview";
 
 export async function loader() {
   const data = await fetchQuery(api.documents.getDocumentById, {
-    id: "j5795szpc5qtk9c0d6mz48zrms7tsb1h" as Id<"documents">,
+    id: "j57djddhqmfps63v38g25057p17tta50" as Id<"documents">,
   });
   return data;
 }

@@ -2,10 +2,9 @@
 
 import { normalizeNodeId } from "platejs";
 import { Plate, usePlateEditor } from "platejs/react";
-
-import { EditorKit } from "~/components/editor-kit";
-import { Editor, EditorContainer } from "./ui/editor";
 import type * as React from "react";
+import { EditorKit } from "~/components/rich-text-editor/editor-kit";
+import { Editor, EditorContainer } from "../ui/editor";
 
 export function PlateEditor({ children }: { children?: React.ReactNode }) {
   const editor = usePlateEditor({

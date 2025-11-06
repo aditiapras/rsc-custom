@@ -23,7 +23,10 @@ import type { TElement } from "platejs";
 import { KEYS } from "platejs";
 import { useEditorRef, useSelectionFragmentProp } from "platejs/react";
 import * as React from "react";
-import { getBlockType, setBlockType } from "~/components/transforms";
+import {
+  getBlockType,
+  setBlockType,
+} from "~/components/rich-text-editor/transforms";
 import {
   DropdownMenu,
   DropdownMenuContent,

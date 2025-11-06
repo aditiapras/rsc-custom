@@ -24,8 +24,8 @@ import * as React from "react";
 import {
   discussionPlugin,
   type TDiscussion,
-} from "~/components/discussion-kit";
-import { suggestionPlugin } from "~/components/suggestion-kit";
+} from "~/components/rich-text-editor/discussion-kit";
+import { suggestionPlugin } from "~/components/rich-text-editor/suggestion-kit";
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
 import { Button } from "~/components/ui/button";
 

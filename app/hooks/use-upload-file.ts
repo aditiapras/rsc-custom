@@ -1,20 +1,19 @@
-import { generateReactHelpers } from "@uploadthing/react";
 import * as React from "react";
 import { toast } from "sonner";
-import type {
-  ClientUploadedFileData,
-  UploadFilesOptions,
-} from "uploadthing/types";
-import { z } from "zod";
-import type { OurFileRouter } from "~/lib/uploadthing";
+import { useMutation } from "convex/react";
+import { api } from "convex/_generated/api";
+import type { Id } from "convex/_generated/dataModel";
 
-export type UploadedFile<T = unknown> = ClientUploadedFileData<T>;
+export type UploadedFile = {
+  name: string;
+  size: number;
+  type: string;
+  url: string;
+  storageId?: Id<"_storage">;
+  fileId?: Id<"files">;
+};
 
-interface UseUploadFileProps
-  extends Pick<
-    UploadFilesOptions<OurFileRouter["editorUploader"]>,
-    "headers" | "onUploadBegin" | "onUploadProgress" | "skipPolling"
-  > {
+interface UseUploadFileProps {
   onUploadComplete?: (file: UploadedFile) => void;
   onUploadError?: (error: unknown) => void;
 }
@@ -22,72 +21,79 @@ interface UseUploadFileProps
 export function useUploadFile({
   onUploadComplete,
   onUploadError,
-  ...props
 }: UseUploadFileProps = {}) {
   const [uploadedFile, setUploadedFile] = React.useState<UploadedFile>();
   const [uploadingFile, setUploadingFile] = React.useState<File>();
   const [progress, setProgress] = React.useState<number>(0);
   const [isUploading, setIsUploading] = React.useState(false);
 
-  async function uploadThing(file: File) {
+  const generateUploadUrl = useMutation(api.storage.generateUploadUrl);
+  const saveUploadedFile = useMutation(api.storage.saveUploadedFile);
+
+  async function uploadConvex(file: File) {
     setIsUploading(true);
     setUploadingFile(file);
 
+    // Simulate progress in client while uploading (fetch tidak expose progress)
+    let progressInterval: number | undefined;
+    const startProgressSimulation = () => {
+      const start = Date.now();
+      progressInterval = window.setInterval(() => {
+        // Naik perlahan hingga 90% selama ~1.5s, sisanya saat selesai
+        const elapsed = Date.now() - start;
+        const approx = Math.min(90, Math.floor((elapsed / 1500) * 90));
+        setProgress(approx);
+      }, 100);
+    };
+
     try {
-      const res = await uploadFiles("editorUploader", {
-        ...props,
-        files: [file],
-        onUploadProgress: ({ progress }) => {
-          setProgress(Math.min(progress, 100));
+      startProgressSimulation();
+
+      const uploadUrl = await generateUploadUrl();
+
+      const res = await fetch(uploadUrl, {
+        method: "POST",
+        headers: {
+          "Content-Type": file.type || "application/octet-stream",
         },
+        body: file,
       });
 
-      setUploadedFile(res[0]);
+      if (!res.ok) {
+        throw new Error(`Upload gagal: ${res.status} ${res.statusText}`);
+      }
 
-      onUploadComplete?.(res[0]);
+      const json = (await res.json()) as { storageId: Id<"_storage"> };
 
-      return uploadedFile;
-    } catch (error) {
-      const errorMessage = getErrorMessage(error);
+      const saved = await saveUploadedFile({
+        storageId: json.storageId,
+        name: file.name,
+        type: file.type,
+        size: file.size,
+      });
 
-      const message =
-        errorMessage.length > 0
-          ? errorMessage
-          : "Something went wrong, please try again later.";
-
-      toast.error(message);
-
-      onUploadError?.(error);
-
-      // Mock upload for unauthenticated users
-      // toast.info('User not logged in. Mocking upload process.');
-      const mockUploadedFile = {
-        key: "mock-key-0",
-        appUrl: `https://mock-app-url.com/${file.name}`,
+      const fileData: UploadedFile = {
         name: file.name,
         size: file.size,
         type: file.type,
-        url: URL.createObjectURL(file),
-      } as UploadedFile;
-
-      // Simulate upload progress
-      let progress = 0;
-
-      const simulateProgress = async () => {
-        while (progress < 100) {
-          await new Promise((resolve) => setTimeout(resolve, 50));
-          progress += 2;
-          setProgress(Math.min(progress, 100));
-        }
+        url: saved.url,
+        storageId: json.storageId,
+        fileId: saved.id as Id<"files">,
       };
 
-      await simulateProgress();
+      setProgress(100);
+      setUploadedFile(fileData);
+      onUploadComplete?.(fileData);
 
-      setUploadedFile(mockUploadedFile);
-
-      return mockUploadedFile;
+      return fileData;
+    } catch (error) {
+      const message = getErrorMessage(error);
+      toast.error(message);
+      onUploadError?.(error);
+      throw error;
     } finally {
-      setProgress(0);
+      if (progressInterval) window.clearInterval(progressInterval);
+      setTimeout(() => setProgress(0), 300);
       setIsUploading(false);
       setUploadingFile(undefined);
     }
@@ -97,30 +103,28 @@ export function useUploadFile({
     isUploading,
     progress,
     uploadedFile,
-    uploadFile: uploadThing,
+    uploadFile: uploadConvex,
     uploadingFile,
   };
 }
 
-export const { uploadFiles, useUploadThing } =
-  generateReactHelpers<OurFileRouter>();
-
 export function getErrorMessage(err: unknown) {
-  const unknownError = "Something went wrong, please try again later.";
+  const unknownError = "Terjadi kesalahan, silakan coba lagi.";
 
-  if (err instanceof z.ZodError) {
-    const errors = err.issues.map((issue) => issue.message);
-
-    return errors.join("\n");
-  }
   if (err instanceof Error) {
     return err.message;
+  }
+  if (
+    typeof err === "object" &&
+    err !== null &&
+    "toString" in (err as Record<string, unknown>)
+  ) {
+    return String(err);
   }
   return unknownError;
 }
 
 export function showErrorToast(err: unknown) {
   const errorMessage = getErrorMessage(err);
-
   return toast.error(errorMessage);
 }

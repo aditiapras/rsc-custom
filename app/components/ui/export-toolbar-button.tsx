@@ -8,7 +8,7 @@ import { createSlateEditor } from "platejs";
 import { useEditorRef } from "platejs/react";
 import { serializeHtml } from "platejs/static";
 import * as React from "react";
-import { BaseEditorKit } from "~/components/editor-base-kit";
+import { BaseEditorKit } from "~/components/rich-text-editor/editor-base-kit";
 import {
   DropdownMenu,
   DropdownMenuContent,

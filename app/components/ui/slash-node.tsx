@@ -22,7 +22,10 @@ import type { PlateEditor, PlateElementProps } from "platejs/react";
 import { PlateElement } from "platejs/react";
 import type * as React from "react";
 
-import { insertBlock, insertInlineElement } from "~/components/transforms";
+import {
+  insertBlock,
+  insertInlineElement,
+} from "~/components/rich-text-editor/transforms";
 
 import {
   InlineCombobox,
